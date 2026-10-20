@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warehouse.mapper.InventoryMapper">
+
+    <resultMap id="InventoryMap" type="com.warehouse.entity.Inventory">
+        <id property="id" column="id"/>
+        <result property="productName" column="product_name"/>
+        <result property="quantity" column="quantity"/>
+        <result property="warehouseLocation" column="warehouse_location"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="InventoryMap">
+        SELECT * FROM inventory
+    </select>
+
+    <select id="findById" resultMap="InventoryMap">
+        SELECT * FROM inventory WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.warehouse.entity.Inventory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO inventory (product_name, quantity, warehouse_location)
+        VALUES (#{productName}, #{quantity}, #{warehouseLocation})
+    </insert>
+
+    <update id="update" parameterType="com.warehouse.entity.Inventory">
+        UPDATE inventory
+        SET product_name = #{productName},
+            quantity = #{quantity},
+            warehouse_location = #{warehouseLocation}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM inventory WHERE id = #{id}
+    </delete>
+
+</mapper>

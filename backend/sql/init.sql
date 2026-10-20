@@ -1,0 +1,39 @@
+CREATE DATABASE IF NOT EXISTS warehouse_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE warehouse_db;
+
+CREATE TABLE IF NOT EXISTS user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(20) DEFAULT 'USER'
+);
+
+CREATE TABLE IF NOT EXISTS inventory (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    quantity INT NOT NULL DEFAULT 0,
+    warehouse_location VARCHAR(100),
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_no VARCHAR(50) NOT NULL UNIQUE,
+    customer_name VARCHAR(100),
+    product_name VARCHAR(100),
+    quantity INT NOT NULL DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'PENDING',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS outbound (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    outbound_no VARCHAR(50) NOT NULL UNIQUE,
+    product_name VARCHAR(100),
+    quantity INT NOT NULL DEFAULT 0,
+    warehouse_location VARCHAR(100),
+    outbound_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO user (username, password, role) VALUES ('admin', 'admin123', 'ADMIN');

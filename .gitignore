@@ -1,0 +1,16 @@
+# SpringBoot 配置文件，本地真实配置不上传
+backend/src/main/resources/application.yml
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# 编译输出
+target/
+dist/
+node_modules/
+
+# 日志
+logs/
+*.log
