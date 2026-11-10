@@ -22,7 +22,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             token = token.substring(7);
             try {
                 Claims claims = jwtUtil.parseToken(token);
-                request.setAttribute("userId", claims.get("userId"));
+                request.setAttribute("userId", Long.valueOf(claims.get("userId").toString()));
                 request.setAttribute("username", claims.get("username"));
                 return true;
             } catch (Exception e) {
