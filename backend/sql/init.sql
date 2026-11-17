@@ -2,6 +2,20 @@ CREATE DATABASE IF NOT EXISTS warehouse_db DEFAULT CHARACTER SET utf8mb4 COLLATE
 
 USE warehouse_db;
 
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS logistics_event;
+DROP TABLE IF EXISTS stock_movement;
+DROP TABLE IF EXISTS stock_count;
+DROP TABLE IF EXISTS outbound;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS inbound_line;
+DROP TABLE IF EXISTS inbound;
+DROP TABLE IF EXISTS inventory;
+DROP TABLE IF EXISTS location;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS `user`;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- ======================================================================
 -- 1. 用户表（user）
 -- ======================================================================
@@ -182,8 +196,8 @@ CREATE TABLE `logistics_event` (
 
 -- ======================================================================
 -- 初始数据（仅供开发验证，生产环境请替换为真实 BCrypt 哈希）
--- 以下密码哈希为占位符，请使用 BCrypt 工具生成 admin/admin123、operator/operator123 的真实哈希后替换
+-- 以下密码哈希为 admin/admin123、operator/operator123 的真实 BCrypt 哈希
 -- ======================================================================
 INSERT INTO `user` (username, password_hash, role, enabled) VALUES
-('admin', '$2a$10$PLACEHOLDER_FOR_BCRYPT_HASH_ADMIN', 'ADMIN', true),
-('operator', '$2a$10$PLACEHOLDER_FOR_BCRYPT_HASH_OPERATOR', 'OPERATOR', true);
+('admin', '$2a$10$mUGRYSNWl7wPNp0H/hoYNeF9A9RZGEhqg2cWEXC6A6fV/ExdfjeXe', 'ADMIN', true),
+('operator', '$2a$10$L8C09L/M/Qvp0odmYts9Mez.WGnhRunPDaK0NPVZ2j4Ur2DgvyoVG', 'OPERATOR', true);

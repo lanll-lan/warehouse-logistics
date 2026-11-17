@@ -6,8 +6,9 @@ import java.time.LocalDateTime;
 @Data
 public class Inventory {
     private Long id;
-    private String productName;
+    private Long productId;
+    private Long locationId;
     private Integer quantity;
-    private String warehouseLocation;
-    private LocalDateTime updateTime;
+    private Long version;
+    private LocalDateTime updatedAt;
 }

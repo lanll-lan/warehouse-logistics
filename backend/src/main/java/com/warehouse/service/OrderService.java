@@ -13,23 +13,20 @@ public class OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
-    public List<Order> list() {
-        return orderMapper.findAll();
+    public Order create(Order order) {
+        orderMapper.insert(order);
+        return order;
+    }
+
+    public List<Order> list(String orderNo, String status) {
+        return orderMapper.findAll(orderNo, status);
     }
 
     public Order getById(Long id) {
         return orderMapper.findById(id);
     }
 
-    public void save(Order order) {
-        if (order.getId() == null) {
-            orderMapper.insert(order);
-        } else {
-            orderMapper.update(order);
-        }
-    }
-
-    public void delete(Long id) {
-        orderMapper.deleteById(id);
+    public void ship(Long id) {
+        orderMapper.ship(id);
     }
 }
