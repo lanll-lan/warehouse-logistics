@@ -5,6 +5,7 @@ import Layout from '../views/Layout.vue'
 import Inventory from '../views/Inventory.vue'
 import Order from '../views/Order.vue'
 import Outbound from '../views/Outbound.vue'
+import { getToken } from '../utils/auth'
 
 Vue.use(VueRouter)
 
@@ -12,16 +13,17 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: { title: '登录' }
   },
   {
     path: '/',
     component: Layout,
     redirect: '/inventory',
     children: [
-      { path: '/inventory', name: 'Inventory', component: Inventory },
-      { path: '/order', name: 'Order', component: Order },
-      { path: '/outbound', name: 'Outbound', component: Outbound }
+      { path: '/inventory', name: 'Inventory', component: Inventory, meta: { title: '库存管理' } },
+      { path: '/order', name: 'Order', component: Order, meta: { title: '订单管理' } },
+      { path: '/outbound', name: 'Outbound', component: Outbound, meta: { title: '出库管理' } }
     ]
   }
 ]
@@ -32,19 +34,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
+  const token = getToken()
   if (to.path === '/login') {
-    if (token) {
-      next('/')
-    } else {
-      next()
-    }
+    token ? next('/') : next()
   } else {
-    if (token) {
-      next()
-    } else {
-      next('/login')
-    }
+    token ? next() : next('/login')
   }
 })
 

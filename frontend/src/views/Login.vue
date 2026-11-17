@@ -1,36 +1,77 @@
 <template>
   <div class="login-container">
-    <el-form :model="form" class="login-form">
+    <el-form
+      :model="form"
+      :rules="rules"
+      ref="form"
+      class="login-form"
+      @keyup.enter.native="onSubmit"
+    >
       <h3>仓储物流管理系统</h3>
-      <el-form-item>
-        <el-input v-model="form.username" placeholder="用户名"></el-input>
+      <el-form-item prop="username">
+        <el-input
+          v-model="form.username"
+          placeholder="用户名"
+          prefix-icon="el-icon-user"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+          v-model="form.password"
+          type="password"
+          placeholder="密码"
+          prefix-icon="el-icon-lock"
+          show-password
+          autocomplete="off"
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="form.password" type="password" placeholder="密码"></el-input>
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="onSubmit"
+          style="width: 100%"
+        >登 录</el-button>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit" style="width: 100%">登录</el-button>
-      </el-form-item>
+      <div class="tip">默认账号：admin / admin123</div>
     </el-form>
   </div>
 </template>
 
 <script>
+import { authApi } from '../api'
+import { setToken, setUser } from '../utils/auth'
+
 export default {
   name: 'Login',
   data() {
     return {
-      form: {
-        username: '',
-        password: ''
+      loading: false,
+      form: { username: '', password: '' },
+      rules: {
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       }
     }
   },
   methods: {
     onSubmit() {
-      this.$axios.post('/login', this.form).then(res => {
-        localStorage.setItem('token', res.data.data.token)
-        this.$router.push('/')
+      this.$refs.form.validate(valid => {
+        if (!valid) return
+        this.loading = true
+        authApi
+          .login({ username: this.form.username, password: this.form.password })
+          .then(data => {
+            setToken(data.token)
+            setUser(data.user)
+            this.$store.commit('SET_USER', data.user)
+            this.$router.push('/')
+          })
+          .catch(() => {})
+          .finally(() => {
+            this.loading = false
+          })
       })
     }
   }
@@ -54,6 +95,11 @@ export default {
 }
 .login-form h3 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+}
+.tip {
+  text-align: center;
+  font-size: 12px;
+  color: #909399;
 }
 </style>

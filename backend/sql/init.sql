@@ -1,3 +1,9 @@
+-- ======================================================================
+-- init.sql - 全量初始化（清除重建模式）
+-- DROP + CREATE 全部 11 张表，仅保留默认用户数据
+-- 适用于：首次部署或需要完全重置数据库的场景
+-- ======================================================================
+
 CREATE DATABASE IF NOT EXISTS warehouse_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE warehouse_db;
