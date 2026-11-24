@@ -41,7 +41,7 @@ public class InventoryService {
     public void adjust(Long inventoryId, Integer delta, Long operatorId) {
         Inventory inv = inventoryMapper.findById(inventoryId);
         if (inv == null) throw new RuntimeException("库存记录不存在");
-        int updated = inventoryMapper.updateQuantity(inventoryId, delta);
+        int updated = inventoryMapper.updateQuantity(inventoryId, delta, inv.getVersion());
         if (updated == 0) throw new RuntimeException("并发冲突，请重试");
     }
 
@@ -56,13 +56,13 @@ public class InventoryService {
             inventoryMapper.insert(inv);
             inv = inventoryMapper.findByProductAndLocation(productId, locationId);
         }
-        int updated = inventoryMapper.updateQuantity(inv.getId(), quantity);
+        int updated = inventoryMapper.updateQuantity(inv.getId(), quantity, inv.getVersion());
         if (updated == 0) throw new RuntimeException("并发冲突，请重试");
     }
 
     @Transactional
     public void setQuantity(Long inventoryId, Integer quantity, Long version) {
-        int updated = inventoryMapper.setQuantity(inventoryId, quantity);
+        int updated = inventoryMapper.setQuantity(inventoryId, quantity, version);
         if (updated == 0) throw new RuntimeException("并发冲突，请重试");
     }
 }

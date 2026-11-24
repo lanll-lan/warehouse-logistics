@@ -25,9 +25,9 @@ public interface InventoryMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(Inventory inventory);
 
-    @Update("UPDATE inventory SET quantity = quantity + #{delta}, version = version + 1, updated_at = NOW() WHERE id = #{id}")
-    int updateQuantity(Long id, Integer delta);
+    @Update("UPDATE inventory SET quantity = quantity + #{delta}, version = version + 1, updated_at = NOW() WHERE id = #{id} AND version = #{version}")
+    int updateQuantity(Long id, Integer delta, Long version);
 
-    @Update("UPDATE inventory SET quantity = #{quantity}, version = version + 1, updated_at = NOW() WHERE id = #{id}")
-    int setQuantity(Long id, Integer quantity);
+    @Update("UPDATE inventory SET quantity = #{quantity}, version = version + 1, updated_at = NOW() WHERE id = #{id} AND version = #{version}")
+    int setQuantity(Long id, Integer quantity, Long version);
 }
