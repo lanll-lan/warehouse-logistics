@@ -7,8 +7,13 @@ import java.time.LocalDateTime;
 public class Outbound {
     private Long id;
     private String outboundNo;
-    private String productName;
-    private Integer quantity;
-    private String warehouseLocation;
-    private LocalDateTime outboundTime;
+    private Long orderId;
+    private Long inventoryId;
+    private Integer pickedQty;
+    private String status;
+    private String trackingNo;
+    private Long createdBy;
+    private LocalDateTime createdAt;
+    private Long confirmedBy;
+    private LocalDateTime confirmedAt;
 }

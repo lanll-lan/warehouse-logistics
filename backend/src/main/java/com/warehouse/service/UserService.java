@@ -3,6 +3,7 @@ package com.warehouse.service;
 import com.warehouse.entity.User;
 import com.warehouse.mapper.UserMapper;
 import com.warehouse.util.JwtUtil;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class UserService {
 
     public Map<String, Object> login(String username, String password) {
         User user = userMapper.findByUsername(username);
-        if (user == null || !user.getPassword().equals(password)) {
-            throw new RuntimeException("用户名或密码错误");
+        if (user == null || user.getEnabled() == null || !user.getEnabled() || !BCrypt.checkpw(password, user.getPasswordHash())) {
+            throw new RuntimeException("账号或密码不正确");
         }
         String token = jwtUtil.generateToken(user.getId(), user.getUsername());
         Map<String, Object> result = new HashMap<>();

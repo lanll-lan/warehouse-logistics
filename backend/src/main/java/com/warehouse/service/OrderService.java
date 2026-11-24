@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -13,23 +14,34 @@ public class OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
-    public List<Order> list() {
-        return orderMapper.findAll();
+    public Order create(Order order) {
+        orderMapper.insert(order);
+        return order;
+    }
+
+    public List<Order> list(String orderNo, String status) {
+        List<Order> all = orderMapper.findAll();
+        if (orderNo != null && !orderNo.isEmpty() && status != null && !status.isEmpty()) {
+            return all.stream()
+                    .filter(o -> o.getOrderNo().contains(orderNo) && o.getStatus().equals(status))
+                    .collect(Collectors.toList());
+        } else if (orderNo != null && !orderNo.isEmpty()) {
+            return all.stream()
+                    .filter(o -> o.getOrderNo().contains(orderNo))
+                    .collect(Collectors.toList());
+        } else if (status != null && !status.isEmpty()) {
+            return all.stream()
+                    .filter(o -> o.getStatus().equals(status))
+                    .collect(Collectors.toList());
+        }
+        return all;
     }
 
     public Order getById(Long id) {
         return orderMapper.findById(id);
     }
 
-    public void save(Order order) {
-        if (order.getId() == null) {
-            orderMapper.insert(order);
-        } else {
-            orderMapper.update(order);
-        }
-    }
-
-    public void delete(Long id) {
-        orderMapper.deleteById(id);
+    public void ship(Long id) {
+        orderMapper.ship(id);
     }
 }
