@@ -21,6 +21,26 @@
           <i class="el-icon-sell"></i>
           <span>出库管理</span>
         </el-menu-item>
+        <el-menu-item index="/inbound">
+          <i class="el-icon-download"></i>
+          <span>入库管理</span>
+        </el-menu-item>
+        <el-menu-item index="/stock-count">
+          <i class="el-icon-data-analysis"></i>
+          <span>盘点管理</span>
+        </el-menu-item>
+        <el-menu-item index="/movement">
+          <i class="el-icon-sort"></i>
+          <span>库存流水</span>
+        </el-menu-item>
+        <el-menu-item index="/logistics">
+          <i class="el-icon-location-information"></i>
+          <span>物流轨迹</span>
+        </el-menu-item>
+        <el-menu-item index="/basic-data">
+          <i class="el-icon-s-grid"></i>
+          <span>基础资料</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
