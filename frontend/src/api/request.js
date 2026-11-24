@@ -1,6 +1,13 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import { getToken, clearAuth } from '../utils/auth'
+import { mockAdapter } from './mock'
+
+/**
+ * mock开关：改成 true 则所有接口走本地假数据，前端可独立开发，不用等后端。
+ * 后端就绪后改回 false 即连真实接口。
+ */
+const USE_MOCK = false
 
 /**
  * 统一 axios 实例：
@@ -17,6 +24,10 @@ const request = axios.create({
   baseURL: 'http://localhost:8888/api',
   timeout: 10000
 })
+
+if (USE_MOCK) {
+  request.defaults.adapter = mockAdapter
+}
 
 request.interceptors.request.use(
   config => {
